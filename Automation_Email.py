@@ -3,13 +3,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 # Email configuration
-EMAIL_ADDRESS = "p1kumaronly@gmail.com"
-EMAIL_PASSWORD = "mtsq sinc oskg inku"  # Use app-specific password if using Gmail with 2FA
+EMAIL_ADDRESS = "p1kuma******@gmail.com" # Send_email address 
+EMAIL_PASSWORD = "#t#q s##c o##g in#u"  # Use app-specific password if using Gmail with 2FA
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 
 # Recipient email
-RECIPIENT_EMAIL = "kumar332vivek@gmail.com"
+RECIPIENT_EMAIL = "kumar332*****@gmail.com" # Receiver EMAIL_ADDRESS 
 
 def send_email():
     try:
@@ -17,7 +17,7 @@ def send_email():
         msg = MIMEMultipart()
         msg['From'] = EMAIL_ADDRESS
         msg['To'] = RECIPIENT_EMAIL
-        msg['Subject'] = "Daily Report"
+        msg['Subject'] = "Daily Report" # Subject of email 
 
         # Email body
         body = "This is your daily report. Hello how are you?"
