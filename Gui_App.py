@@ -1,54 +1,43 @@
 import tkinter as tk
 from tkinter import filedialog
 
-class CreatEmailWindow:
-    def __init__(self, master, filename):
-        self.master = master
-        master.title("Create Email")
-        
-        self.filename = filename
+def create_email_ui():
+    window = tk.Tk()
+    window.title('Email Automation')
 
-        self.label = tk.Label(master, text="Create Email")
-        self.label.pack()
+    def send_email_action():
+        to_address = to_entry.get()
+        subject = subject_entry.get()
+        body = body_text.get("1.0", tk.END)
+        attachment_path = filedialog.askopenfilename()
+        send_email(to_address, subject, body, attachment_path)
 
-        self.sender_label = tk.Label(master, text="Sender Email:")
-        self.sender_label.pack()
-        self.sender_entry = tk.Entry(master)
-        self.sender_entry.pack()
+    def view_emails_action():
+        emails = read_emails()
+        for email in emails:
+            email_listbox.insert(tk.END, f"From: {email['from']}, Subject: {email['subject']}")
 
-        self.password_label = tk.Label(master, text="Password:")
-        self.password_label.pack()
-        self.password_entry = tk.Entry(master, show="*")
-        self.password_entry.pack()
+    # Create Email Section
+    tk.Label(window, text='To:').grid(row=0)
+    to_entry = tk.Entry(window)
+    to_entry.grid(row=0, column=1)
 
-        self.receiver_label = tk.Label(master, text="Receiver Email:")
-        self.receiver_label.pack()
-        self.receiver_entry = tk.Entry(master)
-        self.receiver_entry.pack()
+    tk.Label(window, text='Subject:').grid(row=1)
+    subject_entry = tk.Entry(window)
+    subject_entry.grid(row=1, column=1)
 
-        self.subject_label = tk.Label(master, text="Subject:")
-        self.subject_label.pack()
-        self.subject_entry = tk.Entry(master)
-        self.subject_entry.pack()
+    tk.Label(window, text='Body:').grid(row=2)
+    body_text = tk.Text(window, height=10, width=30)
+    body_text.grid(row=2, column=1)
 
-        self.body_label = tk.Label(master, text="Body:")
-        self.body_label.pack()
-        self.body_text = tk.Text(master, height=10)
-        self.body_text.pack()
+    tk.Button(window, text='Send Email', command=send_email_action).grid(row=3, column=1)
 
-        self.send_button = tk.Button(master, text="Send", command=self.send_email)
-        self.send_button.pack()
+    # View Emails Section
+    tk.Button(window, text='View Emails', command=view_emails_action).grid(row=4, column=0)
+    email_listbox = tk.Listbox(window, height=10, width=50)
+    email_listbox.grid(row=5, column=0, columnspan=2)
 
-    def send_email(self):
-        sender_email = self.sender_entry.get()
-        sender_password = self.password_entry.get()
-        receiver_email = self.receiver_entry.get()
-        subject = self.subject_entry.get()
-        body = self.body_text.get("1.0", tk.END)
-        send_email(sender_email, sender_password, receiver_email, subject, body, self.filename)
-        self.master.destroy()
+    window.mainloop()
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = CreatEmailWindow(root)
-    root.mainloop()
+# Run the UI
+create_email_ui()
