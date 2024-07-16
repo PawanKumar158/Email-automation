@@ -35,6 +35,26 @@ def send_email():
 
     except Exception as e:
         print(f"Failed to send email: {e}")
+        
+def read_emails():
+    mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    mail.login('p1kumaronly@gmail.com', 'mtsq sinc oskg inku')
+    mail.select('inbox')
+
+    result, data = mail.search(None, 'ALL')
+    email_ids = data[0].split()
+
+    emails = []
+    for e_id in email_ids:
+        result, msg_data = mail.fetch(e_id, '(RFC822)')
+        msg = email.message_from_bytes(msg_data[0][1])
+        emails.append({
+            'from': msg['from'],
+            'subject': msg['subject'],
+            'body': msg.get_payload(decode=True)
+        })
+
+    return emails
 
 # Execute the email sending function
 send_email()
