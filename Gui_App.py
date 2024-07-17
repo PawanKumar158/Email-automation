@@ -14,10 +14,10 @@ def create_email_ui():
 
     def view_emails_action():
         emails = read_emails()
+        email_listbox.delete(0, tk.END)
         for email in emails:
             email_listbox.insert(tk.END, f"From: {email['from']}, Subject: {email['subject']}")
 
-    # Create Email Section
     tk.Label(window, text='To:').grid(row=0)
     to_entry = tk.Entry(window)
     to_entry.grid(row=0, column=1)
@@ -32,7 +32,6 @@ def create_email_ui():
 
     tk.Button(window, text='Send Email', command=send_email_action).grid(row=3, column=1)
 
-    # View Emails Section
     tk.Button(window, text='View Emails', command=view_emails_action).grid(row=4, column=0)
     email_listbox = tk.Listbox(window, height=10, width=50)
     email_listbox.grid(row=5, column=0, columnspan=2)
