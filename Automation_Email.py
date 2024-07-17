@@ -1,44 +1,41 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import imaplib
+import Gui_App
 
-# Email configuration
-EMAIL_ADDRESS = "p1kuma******@gmail.com" # Send_email address 
-EMAIL_PASSWORD = "#t#q s##c o##g in#u"  # Use app-specific password if using Gmail with 2FA
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
 
-# Recipient email
-RECIPIENT_EMAIL = "kumar332*****@gmail.com" # Receiver EMAIL_ADDRESS 
+def send_email(to_address, subject, body, attachment_path=None):
+    from_address = 'p1kumaronly@gmail.com'
+    password = 'mtsq sinc oskg inku'
 
-def send_email():
-    try:
-        # Create the email
-        msg = MIMEMultipart()
-        msg['From'] = EMAIL_ADDRESS
-        msg['To'] = RECIPIENT_EMAIL
-        msg['Subject'] = "Daily Report" # Subject of email 
+    msg = MIMEMultipart()
+    msg['From'] = from_address
+    msg['To'] = to_address
+    msg['Subject'] = subject
 
-        # Email body
-        body = "This is your daily report. Hello how are you?"
-        msg.attach(MIMEText(body, 'plain'))
+    msg.attach(MIMEText(body, 'plain'))
 
-        # Connect to the SMTP server
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        text = msg.as_string()
-        server.sendmail(EMAIL_ADDRESS, RECIPIENT_EMAIL, text)
-        server.quit()
+    if attachment_path:
+        attachment = open(attachment_path, 'rb')
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(attachment.read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition', f'attachment; filename={attachment_path}')
+        msg.attach(part)
 
-        print("Email sent successfully.")
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(from_address, password)
+    text = msg.as_string()
+    server.sendmail(from_address, to_address, text)
+    server.quit()
 
-    except Exception as e:
-        print(f"Failed to send email: {e}")
-        
 def read_emails():
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
-    mail.login('p1kumaronly@gmail.com', 'mtsq sinc oskg inku')
+    mail.login('p1kuma****y@gmail.com', 'm##q si#c #s3g i#ku')
     mail.select('inbox')
 
     result, data = mail.search(None, 'ALL')
@@ -55,6 +52,3 @@ def read_emails():
         })
 
     return emails
-
-# Execute the email sending function
-send_email()
